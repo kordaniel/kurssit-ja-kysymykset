@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tikape;
+package tikape.domain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,5 +31,7 @@ public class Kurssi {
         this(-1, nimi);
     }
     
-    
+    public String toString() {
+        return this.id + ": " + this.nimi + "\n " + this.kysymykset.toString();
+    }
 }

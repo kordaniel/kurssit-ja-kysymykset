@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tikape;
+package tikape.dao;
 
 import java.sql.*;
 import java.util.List;
@@ -18,4 +18,5 @@ public interface Dao<T, K> {
     List<T> findAll() throws SQLException;
     T saveOrUpdate(T object) throws SQLException;
     void delete (K key) throws SQLException;
+    
 }

@@ -5,11 +5,13 @@
  */
 package tikape;
 
+import tikape.database.Database;
 import java.sql.*;
 import java.util.HashMap;
 import spark.ModelAndView;
 import spark.Spark;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
+import tikape.dao.KurssiDao;
 /**
  *
  * @author danielko
@@ -23,20 +25,27 @@ public class Main {
             Spark.port(Integer.valueOf(System.getenv("PORT")));
         }
         
-        //Connection c = DriverManager.getConnection("jdbc:sqlite:testi.db");
-        //Statement stmt = c.createStatement();
-        //ResultSet resultSet = stmt.executeQuery("SELECT 1");
+        Database database = new Database("kehitysTietokanta.db");
+        KurssiDao kurssiDao = new KurssiDao(database);
         
-        //if (resultSet.next()) {
-        //    System.out.println("toimii");
-        //} else {
-        //    System.out.println("virhetta pukkaa");
-        //}
+        System.out.println(kurssiDao.findOne(3));
+        System.out.println("");
+        System.out.println(kurssiDao.findAll());
+        
+        
+        //Connection c = DriverManager.getConnection("jdbc:sqlite:testi.db");
+        /*
+        Connection c = database.getConnection();
+        Statement stmt = c.createStatement();
+        ResultSet resltSet = stmt.executeQuery("SELECT * FROM Kurssi");
+        while (resltSet.next()) {
+            System.out.println(resltSet.getInt("id") + "\t" + resltSet.getString("nimi"));
+        }
         
         Spark.get("*", (req, res) -> {
             HashMap map = new HashMap<>();
             return new ModelAndView(map, "index");
-        }, new ThymeleafTemplateEngine());
+        }, new ThymeleafTemplateEngine());*/
     }
     
 }

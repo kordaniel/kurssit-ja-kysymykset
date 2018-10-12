@@ -3,22 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tikape;
+package tikape.domain;
 
 /**
  *
  * @author danielko
  */
-public class Vastaus {
+public class Aihe {
     private Integer id;
-    private Kysymys kysymys;
-    private Boolean oikein;
+    private String teksti;
 
-    public Vastaus(Integer id, Kysymys kysymys, Boolean oikein) {
+    public Aihe(Integer id, String teksti) {
         this.id = id;
-        this.kysymys = kysymys;
-        this.oikein = oikein;
+        this.teksti = teksti;
     }
-
     
 }

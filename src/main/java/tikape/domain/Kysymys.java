@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tikape;
+package tikape.domain;
 
+import tikape.domain.Kurssi;
+import tikape.domain.Aihe;
 import java.util.List;
 
 /**
