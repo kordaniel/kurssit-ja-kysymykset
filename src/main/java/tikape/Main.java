@@ -28,24 +28,12 @@ public class Main {
         Database database = new Database("kehitysTietokanta.db");
         KurssiDao kurssiDao = new KurssiDao(database);
         
-        System.out.println(kurssiDao.findOne(3));
-        System.out.println("");
-        System.out.println(kurssiDao.findAll());
-        
-        
-        //Connection c = DriverManager.getConnection("jdbc:sqlite:testi.db");
-        /*
-        Connection c = database.getConnection();
-        Statement stmt = c.createStatement();
-        ResultSet resltSet = stmt.executeQuery("SELECT * FROM Kurssi");
-        while (resltSet.next()) {
-            System.out.println(resltSet.getInt("id") + "\t" + resltSet.getString("nimi"));
-        }
-        
         Spark.get("*", (req, res) -> {
             HashMap map = new HashMap<>();
+            map.put("kurssit", kurssiDao.findAll());
+            
             return new ModelAndView(map, "index");
-        }, new ThymeleafTemplateEngine());*/
+        }, new ThymeleafTemplateEngine());
     }
     
 }

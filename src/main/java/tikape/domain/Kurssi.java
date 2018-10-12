@@ -30,6 +30,14 @@ public class Kurssi {
     public Kurssi(String nimi) {
         this(-1, nimi);
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getNimi() {
+        return nimi;
+    }
     
     public String toString() {
         return this.id + ": " + this.nimi + "\n " + this.kysymykset.toString();

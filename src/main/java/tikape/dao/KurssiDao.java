@@ -32,18 +32,15 @@ public class KurssiDao implements Dao<Kurssi, Integer> {
         stmt.setInt(1, key);
         
         ResultSet rs = stmt.executeQuery();
-        boolean hasOne = rs.next();
-        if (!hasOne) {
-            rs.close();
-            stmt.close();
-            conn.close();
+        
+        if (!rs.next()) {
+            closeAllResources(rs, stmt, conn);
             return null;
         }
+        
         Kurssi kurssi = new Kurssi(rs.getInt("id"), rs.getString("nimi"));
         
-        rs.close();
-        stmt.close();
-        conn.close();
+        closeAllResources(rs, stmt, conn);
         return kurssi;
     }
 
@@ -59,10 +56,7 @@ public class KurssiDao implements Dao<Kurssi, Integer> {
             kurssit.add(new Kurssi(rs.getInt("id"), rs.getString("nimi")));
         }
         
-        rs.close();
-        stmt.close();
-        conn.close();
-        
+        closeAllResources(rs, stmt, conn);
         return kurssit;
     }
 
@@ -76,4 +70,9 @@ public class KurssiDao implements Dao<Kurssi, Integer> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    private void closeAllResources(ResultSet rs, PreparedStatement stmt, Connection conn) throws SQLException {
+        if (rs != null) rs.close();
+        if (stmt != null) stmt.close();
+        if (conn != null) conn.close();
+    }
 }
