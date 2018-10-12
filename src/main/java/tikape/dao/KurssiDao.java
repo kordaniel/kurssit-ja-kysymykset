@@ -57,7 +57,7 @@ public class KurssiDao implements Dao<Kurssi, Integer> {
         }
         
         closeAllResources(rs, stmt, conn);
-        return kurssit;
+        return kurssit.isEmpty() ? null : kurssit;
     }
 
     @Override

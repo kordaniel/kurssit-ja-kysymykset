@@ -25,6 +25,26 @@ public class Kysymys {
         this.kurssi_id = kurssi_id;
         this.aihe_id = aihe_id;
     }
-    
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getTeksti() {
+        return teksti;
+    }
+
+    public Integer getKurssi_id() {
+        return kurssi_id;
+    }
+
+    public Integer getAihe_id() {
+        return aihe_id;
+    }
+
+    @Override
+    public String toString() {
+        return id + ": k:" + kurssi_id + ", a:" + aihe_id + ": " + teksti;
+    }
     
 }

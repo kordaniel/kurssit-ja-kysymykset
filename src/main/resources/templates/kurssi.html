@@ -6,10 +6,10 @@
     </head>
     <body>
         <h1 th:text="${kurssi.nimi}">Kurssi</h1>
+        <h3>Tämän kurssin kysymykset:</h3>
         <ul>
-            <li th:each="kurssi: ${kurssit}">
-                <span th:text="${kurssi.id}">1</span>
-                <span th:text="${kurssi.nimi}">nimi</span>
+            <li th:each="kysymys: ${kysymykset}">
+                <span th:text="${kysymys.teksti}">kysymys</span>
             </li>
         </ul>
     </body>

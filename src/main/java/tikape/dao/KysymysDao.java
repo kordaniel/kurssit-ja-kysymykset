@@ -9,8 +9,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import tikape.database.Database;
+import tikape.domain.Kurssi;
 import tikape.domain.Kysymys;
 
 /**
@@ -26,12 +28,60 @@ public class KysymysDao implements Dao<Kysymys, Integer> {
     
     @Override
     public Kysymys findOne(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection conn = db.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Kysymys WHERE id = ?");
+        stmt.setInt(1, key);
+        
+        ResultSet rs = stmt.executeQuery();
+        
+        if (!rs.next()) {
+            closeAllResources(rs, stmt, conn);
+            return null;
+        }
+        
+        Kysymys kysymys = new Kysymys(rs.getInt("id"), 
+                rs.getString("teksti"), rs.getInt("kurssi_id"), rs.getInt("aihe_id"));
+        
+        closeAllResources(rs, stmt, conn);
+        return kysymys;
     }
 
     @Override
     public List<Kysymys> findAll() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection conn = db.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Kysymys");
+        ResultSet rs = stmt.executeQuery();
+        
+        List<Kysymys> kysymykset = new ArrayList<>();
+        
+        while (rs.next()) {
+            kysymykset.add(new Kysymys(rs.getInt("id"), 
+                    rs.getString("teksti"), rs.getInt("kurssi_id"), rs.getInt("aihe_id")));
+        }
+        
+        closeAllResources(rs, stmt, conn);
+        //return kysymykset.isEmpty() ? null : kysymykset;
+        return kysymykset;
+    }
+    
+    public List<Kysymys> findAllForCourse(Kurssi k) throws SQLException {
+        if (k == null) return new ArrayList<>();
+        
+        Connection conn = db.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Kysymys WHERE kurssi_id = ?");
+        stmt.setInt(1, k.getId());
+        
+        ResultSet rs = stmt.executeQuery();
+        
+        List<Kysymys> kysymykset = new ArrayList<>();
+        
+        while (rs.next()) {
+            kysymykset.add(new Kysymys(rs.getInt("id"), 
+                    rs.getString("teksti"), rs.getInt("kurssi_id"), rs.getInt("aihe_id")));
+        }
+        
+        closeAllResources(rs, stmt, conn);
+        return kysymykset;
     }
 
     @Override

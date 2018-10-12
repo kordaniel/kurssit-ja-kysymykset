@@ -8,12 +8,15 @@ package tikape;
 import tikape.database.Database;
 import java.sql.*;
 import java.util.HashMap;
+import java.util.List;
 import spark.ModelAndView;
 import spark.Spark;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.dao.AiheDao;
 import tikape.dao.KurssiDao;
+import tikape.dao.KysymysDao;
 import tikape.domain.Kurssi;
+import tikape.domain.Kysymys;
 /**
  *
  * @author danielko
@@ -29,9 +32,10 @@ public class Main {
         
         Database database = new Database("kehitysTietokanta.db");
         KurssiDao kurssiDao = new KurssiDao(database);
+        KysymysDao kysymysDao = new KysymysDao(database);
         AiheDao aiheDao = new AiheDao(database);
         
-        //System.out.println(aiheDao.findAll());
+        //System.out.println(kysymysDao.findAllForCourse(kurssiDao.findOne(3)));
         //System.exit(0);
         
         Spark.get("/", (req, res) -> {
@@ -42,20 +46,22 @@ public class Main {
         }, new ThymeleafTemplateEngine());
         
         Spark.get("/kurssi/:id", (req, res) -> {
-            Integer nro = null;
+            Integer kurssiId = null;
             try {
-                nro = Integer.parseInt(req.params("id"));
+                kurssiId = Integer.parseInt(req.params("id"));
             } catch (NumberFormatException e) {
                 res.redirect("/");
             }
             
-            Kurssi k = kurssiDao.findOne(nro);
-            if (k == null) {
+            Kurssi kurssi = kurssiDao.findOne(kurssiId);
+            if (kurssi == null) {
                 res.redirect("/");
             }
+            List<Kysymys> kysymykset = kysymysDao.findAllForCourse(kurssi);
             
             HashMap map = new HashMap<>();
-            map.put("kurssi", k);
+            map.put("kurssi", kurssi);
+            map.put("kysymykset",kysymykset);
             
             return new ModelAndView(map, "kurssi");
         }, new ThymeleafTemplateEngine());
