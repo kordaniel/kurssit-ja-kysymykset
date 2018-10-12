@@ -18,4 +18,7 @@ public class Aihe {
         this.teksti = teksti;
     }
     
+    public String toString() {
+        return this.id + ": " + this.teksti;
+    }
 }

@@ -15,20 +15,14 @@ import java.util.List;
 public class Kurssi {
     private Integer id;
     private String nimi;
-    private List<Kysymys> kysymykset;
 
-    public Kurssi(Integer id, String nimi, List<Kysymys> kysymykset) {
+     public Kurssi(Integer id, String nimi) {
         this.id = id;
         this.nimi = nimi;
-        this.kysymykset = kysymykset;
-    }
-    
-    public Kurssi(Integer id, String nimi) {
-        this(id, nimi, new ArrayList<>());
     }
     
     public Kurssi(String nimi) {
-        this(-1, nimi);
+        this(null, nimi);
     }
 
     public Integer getId() {
@@ -40,6 +34,6 @@ public class Kurssi {
     }
     
     public String toString() {
-        return this.id + ": " + this.nimi + "\n " + this.kysymykset.toString();
+        return this.id + ": " + this.nimi;
     }
 }

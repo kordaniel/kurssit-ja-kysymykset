@@ -11,7 +11,9 @@ import java.util.HashMap;
 import spark.ModelAndView;
 import spark.Spark;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
+import tikape.dao.AiheDao;
 import tikape.dao.KurssiDao;
+import tikape.domain.Kurssi;
 /**
  *
  * @author danielko
@@ -27,6 +29,10 @@ public class Main {
         
         Database database = new Database("kehitysTietokanta.db");
         KurssiDao kurssiDao = new KurssiDao(database);
+        AiheDao aiheDao = new AiheDao(database);
+        
+        //System.out.println(aiheDao.findAll());
+        //System.exit(0);
         
         Spark.get("/", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -43,8 +49,13 @@ public class Main {
                 res.redirect("/");
             }
             
+            Kurssi k = kurssiDao.findOne(nro);
+            if (k == null) {
+                res.redirect("/");
+            }
+            
             HashMap map = new HashMap<>();
-            map.put("kurssi", kurssiDao.findOne(nro));
+            map.put("kurssi", k);
             
             return new ModelAndView(map, "kurssi");
         }, new ThymeleafTemplateEngine());

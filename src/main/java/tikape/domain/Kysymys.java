@@ -16,16 +16,14 @@ import java.util.List;
 public class Kysymys {
     private Integer id;
     private String teksti;
-    private Kurssi kurssi;
-    private Aihe aihe;
-    private List<Vastaus> vastaukset;
+    private Integer kurssi_id;
+    private Integer aihe_id;
 
-    public Kysymys(Integer id, String teksti, Kurssi kurssi, Aihe aihe, List<Vastaus> vastaukset) {
+    public Kysymys(Integer id, String teksti, Integer kurssi_id, Integer aihe_id) {
         this.id = id;
         this.teksti = teksti;
-        this.kurssi = kurssi;
-        this.aihe = aihe;
-        this.vastaukset = vastaukset;
+        this.kurssi_id = kurssi_id;
+        this.aihe_id = aihe_id;
     }
     
     
