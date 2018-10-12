@@ -16,25 +16,25 @@ import tikape.database.Database;
  *
  * @author danielko
  */
-public class Vastaus implements Dao<Vastaus, Integer> {
+public class VastausDao implements Dao<VastausDao, Integer> {
     private Database db;
 
-    public Vastaus(Database db) {
+    public VastausDao(Database db) {
         this.db = db;
     }
     
     @Override
-    public Vastaus findOne(Integer key) throws SQLException {
+    public VastausDao findOne(Integer key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<Vastaus> findAll() throws SQLException {
+    public List<VastausDao> findAll() throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Vastaus saveOrUpdate(Vastaus object) throws SQLException {
+    public VastausDao saveOrUpdate(VastausDao object) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

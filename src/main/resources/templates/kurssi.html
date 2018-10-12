@@ -8,9 +8,7 @@
         <h1 th:text="${kurssi.nimi}">Kurssi</h1>
         <h3>Tämän kurssin kysymykset:</h3>
         <ul>
-            <li th:each="kysymys: ${kysymykset}">
-                <span th:text="${kysymys.teksti}">kysymys</span>
-            </li>
+            <li th:each="kysymys: ${kysymykset}"><span th:text="${kysymys.teksti}">kysymys</span></li>
         </ul>
     </body>
 </html>
