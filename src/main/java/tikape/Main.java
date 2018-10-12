@@ -28,11 +28,25 @@ public class Main {
         Database database = new Database("kehitysTietokanta.db");
         KurssiDao kurssiDao = new KurssiDao(database);
         
-        Spark.get("*", (req, res) -> {
+        Spark.get("/", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("kurssit", kurssiDao.findAll());
             
             return new ModelAndView(map, "index");
+        }, new ThymeleafTemplateEngine());
+        
+        Spark.get("/kurssi/:id", (req, res) -> {
+            Integer nro = null;
+            try {
+                nro = Integer.parseInt(req.params("id"));
+            } catch (NumberFormatException e) {
+                res.redirect("/");
+            }
+            
+            HashMap map = new HashMap<>();
+            map.put("kurssi", kurssiDao.findOne(nro));
+            
+            return new ModelAndView(map, "kurssi");
         }, new ThymeleafTemplateEngine());
     }
     

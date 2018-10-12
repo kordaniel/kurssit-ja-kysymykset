@@ -1,11 +1,11 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Kurssit ja kysymykset harjoitus</title>
+        <title th:text="${kurssi.nimi}">Kurssisivu</title>
         <meta charset="UTF-8" />
     </head>
     <body>
-        <h1>Kurssit</h1>
+        <h1 th:text="${kurssi.nimi}">Kurssi</h1>
         <ul>
             <li th:each="kurssi: ${kurssit}">
                 <span th:text="${kurssi.id}">1</span>
