@@ -5,11 +5,12 @@
         <meta charset="UTF-8" />
     </head>
     <body>
-        <h1>Kurssit</h1>
+        <h1>Kurssit testi</h1>
         <ul>
             <li th:each="kurssi: ${kurssit}">
-                <span th:text="${kurssi.id}">1</span>
-                <span th:text="${kurssi.nimi}">nimi</span>
+                <a th:href="@{~/kurssi/{id}(id=${kurssi.id})}">
+                    <span th:text="${kurssi.nimi}">Kurssi</span>
+                </a>
             </li>
         </ul>
     </body>
