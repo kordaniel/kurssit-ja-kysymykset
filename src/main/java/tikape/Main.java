@@ -15,6 +15,7 @@ import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.dao.AiheDao;
 import tikape.dao.KurssiDao;
 import tikape.dao.KysymysDao;
+import tikape.domain.Aihe;
 import tikape.domain.Kurssi;
 import tikape.domain.Kysymys;
 /**
@@ -35,9 +36,6 @@ public class Main {
         KysymysDao kysymysDao = new KysymysDao(database);
         AiheDao aiheDao = new AiheDao(database);
         
-        //System.out.println(kysymysDao.findAllForCourse(kurssiDao.findOne(3)));
-        //System.exit(0);
-        
         Spark.get("/", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("kurssit", kurssiDao.findAll());
@@ -54,19 +52,34 @@ public class Main {
             }
             
             Kurssi kurssi = kurssiDao.findOne(kurssiId);
-            if (kurssi == null) {
-                res.redirect("/");
-            }
+            if (kurssi == null) res.redirect("/");
+            
             List<Kysymys> kysymykset = kysymysDao.findAllForCourse(kurssi);
-            for (Kysymys kysymys : kysymykset) {
-                System.out.println(kysymys.getId());
-            }
-            System.out.println("");
+            
             HashMap map = new HashMap<>();
             map.put("kurssi", kurssi);
             map.put("kysymykset",kysymykset);
             
             return new ModelAndView(map, "kurssi");
+        }, new ThymeleafTemplateEngine());
+        
+        Spark.get("/kysymys/:id", (req, res) -> {
+            Integer kysymysId = null;
+            try {
+                kysymysId = Integer.parseInt(req.params("id"));
+            } catch (NumberFormatException e) {
+                res.redirect("/");
+            }
+            Kysymys kysymys = kysymysDao.findOne(kysymysId);
+            if (kysymys == null) res.redirect("/");
+            
+            Aihe aihe = aiheDao.findOne(kysymys.getAihe_id());
+            
+            HashMap map = new HashMap<>();
+            map.put("kysymys", kysymys);
+            map.put("aihe", aihe);
+            
+            return new ModelAndView(map, "kysymys");
         }, new ThymeleafTemplateEngine());
     }
     

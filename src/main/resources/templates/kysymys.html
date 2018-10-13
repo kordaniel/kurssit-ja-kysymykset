@@ -1,0 +1,15 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title th:text="${kysymys.teksti}">Kurssisivu</title>
+        <meta charset="UTF-8" />
+    </head>
+    <body>
+        <h1 th:text="${kysymys.teksti}">Kurssi</h1>
+        <h3>Kysymys liittyy seuraaviin aiheisiin:</h3>
+        <span th:text="${aihe.teksti}">aihe</span>
+        <h3>Vastausvaihtoehdot:</h3>
+        <h4>Kysymys on liitetty seuraaviin kursseihin:</h4>
+        
+    </body>
+</html>
