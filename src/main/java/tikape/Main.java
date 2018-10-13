@@ -58,7 +58,10 @@ public class Main {
                 res.redirect("/");
             }
             List<Kysymys> kysymykset = kysymysDao.findAllForCourse(kurssi);
-            
+            for (Kysymys kysymys : kysymykset) {
+                System.out.println(kysymys.getId());
+            }
+            System.out.println("");
             HashMap map = new HashMap<>();
             map.put("kurssi", kurssi);
             map.put("kysymykset",kysymykset);

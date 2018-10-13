@@ -8,7 +8,23 @@
         <h1 th:text="${kurssi.nimi}">Kurssi</h1>
         <h3>Tämän kurssin kysymykset:</h3>
         <ul>
-            <li th:each="kysymys: ${kysymykset}"><span th:text="${kysymys.teksti}">kysymys</span></li>
+            <li th:each="kysymys: ${kysymykset}">
+                <a th:href="@{~/users/{id}(id=${kysymys.id})}">
+                    <span th:text="${kysymys.teksti}">kysymys</span>
+                </a>
+            </li>
         </ul>
+        <h3>Lisää uusi kysymys</h3>
+        
+        <form>
+            <table>
+                <tr><td>Kysymysteksti:</td><td></td></tr>
+                <tr>
+                    <td><input type="text" name="uusiKysymys"/></td>
+                    <td><input type="submit" value="Luo"/></td>
+                </tr>
+            </table>
+        </form>
+        
     </body>
 </html>
