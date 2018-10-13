@@ -39,6 +39,11 @@ public class Vastaus {
     public Boolean getOikein() {
         return oikein;
     }
+    
+    public String getOnoikeavastaus() {
+        if (getOikein()) return "oikein";
+        return "väärin";
+    }
 
     @Override
     public String toString() {

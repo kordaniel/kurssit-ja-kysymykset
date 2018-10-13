@@ -9,6 +9,12 @@
         <h3>Kysymys liittyy seuraaviin aiheisiin:</h3>
         <span th:text="${aihe.teksti}">aihe</span>
         <h3>Vastausvaihtoehdot:</h3>
+        <ul>
+            <li th:each="vastaus: ${vastaukset}">
+                <span th:text="${vastaus.teksti}">vastaus</span>.
+                    <span style="font-weight:bold" th:text="${vastaus.onoikeavastaus}">oikein</span>
+            </li>
+        </ul>
         <h4>Kysymys on liitetty seuraaviin kursseihin:</h4>
         
     </body>

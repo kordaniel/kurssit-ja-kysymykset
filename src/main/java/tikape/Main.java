@@ -45,6 +45,34 @@ public class Main {
         //vastausDao.findAllForQuestion(kysymysDao.findOne(2)).forEach(v -> System.out.println(v));
         //System.out.println(vastausDao.findOne(8));
         
+        Spark.post("/uusikurssi", (req, res) -> {
+            String nimi = req.queryParams("kurssinimi");
+            
+            Kurssi uusiKurssi = new Kurssi(nimi);
+            kurssiDao.saveOrUpdate(uusiKurssi);
+            
+            res.redirect("/");
+            return "";
+        });
+        
+        Spark.post("/poistakurssi", (req, res) -> {
+            String saatu = req.queryParams("kurssiId");
+            //System.out.println("saatu: " + saatu);
+            int kurssiId = -1;
+            try {
+                kurssiId = Integer.parseInt(saatu);
+                //System.out.println("int: " + kurssiId);
+            } catch (NumberFormatException e) {
+                //System.out.println("ei int: " + e);
+                res.redirect("/");
+                return "";
+            }
+            //System.out.println("poistetaan: " + kurssiId);
+            kurssiDao.delete(kurssiId);
+            res.redirect("/");
+            return "";
+        });
+        
         
         Spark.get("/", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -84,10 +112,13 @@ public class Main {
             if (kysymys == null) res.redirect("/");
             
             Aihe aihe = aiheDao.findOne(kysymys.getAihe_id());
+            List<Vastaus> vastaukset = vastausDao.findAllForQuestion(kysymys);
+            
             
             HashMap map = new HashMap<>();
             map.put("kysymys", kysymys);
             map.put("aihe", aihe);
+            map.put("vastaukset", vastaukset);
             
             return new ModelAndView(map, "kysymys");
         }, new ThymeleafTemplateEngine());

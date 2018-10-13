@@ -27,6 +27,7 @@ public class KurssiDao implements Dao<Kurssi, Integer> {
     
     @Override
     public Kurssi findOne(Integer key) throws SQLException {
+        if (key == null) return null;
         Connection conn = db.getConnection();
         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Kurssi WHERE id = ?");
         stmt.setInt(1, key);
@@ -62,12 +63,21 @@ public class KurssiDao implements Dao<Kurssi, Integer> {
 
     @Override
     public Kurssi saveOrUpdate(Kurssi object) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try (Connection conn = db.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Kurssi (nimi) VALUES (?)");
+            stmt.setString(1, object.getNimi());
+            stmt.executeUpdate();
+        }
+        return null;
     }
-
+    
     @Override
     public void delete(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try (Connection conn = db.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM Kurssi WHERE id = ?");
+            stmt.setInt(1, key);
+            stmt.executeUpdate();
+        }
     }
     
     private void closeAllResources(ResultSet rs, PreparedStatement stmt, Connection conn) throws SQLException {

@@ -8,8 +8,19 @@
         <h1>Kurssit testi</h1>
         <ul>
             <li th:each="kurssi: ${kurssit}">
-                <a th:href="@{~/kurssi/{id}(id=${kurssi.id})}"><span th:text="${kurssi.nimi}">Kurssi</span></a><form><input type="submit" value="Poista"/></form>
+                <a th:href="@{~/kurssi/{id}(id=${kurssi.id})}">
+                    <span th:text="${kurssi.nimi}">Kurssi</span></a>
+                <form method="post" action="/poistakurssi">
+                    
+                        <button type="submit" name="kurssiId" th:value="${kurssi.id}">Poista</button>
+                        
+                    </form>
             </li>
         </ul>
+        <form method="post" action="/uusikurssi">
+            <span>Lisää uusi:</span>
+            <input type="text" name="kurssinimi"/>
+            <input type="submit" value="lisää Kurssi"/>
+        </form>
     </body>
 </html>
