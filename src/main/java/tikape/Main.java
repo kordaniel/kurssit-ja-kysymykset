@@ -15,9 +15,11 @@ import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.dao.AiheDao;
 import tikape.dao.KurssiDao;
 import tikape.dao.KysymysDao;
+import tikape.dao.VastausDao;
 import tikape.domain.Aihe;
 import tikape.domain.Kurssi;
 import tikape.domain.Kysymys;
+import tikape.domain.Vastaus;
 /**
  *
  * @author danielko
@@ -31,10 +33,18 @@ public class Main {
             Spark.port(Integer.valueOf(System.getenv("PORT")));
         }
         
+        
         Database database = new Database("kehitysTietokanta.db");
         KurssiDao kurssiDao = new KurssiDao(database);
         KysymysDao kysymysDao = new KysymysDao(database);
+        VastausDao vastausDao = new VastausDao(database);
         AiheDao aiheDao = new AiheDao(database);
+        
+        
+        //vastausDao.findAll().forEach(v -> System.out.println(v));
+        //vastausDao.findAllForQuestion(kysymysDao.findOne(2)).forEach(v -> System.out.println(v));
+        //System.out.println(vastausDao.findOne(8));
+        
         
         Spark.get("/", (req, res) -> {
             HashMap map = new HashMap<>();

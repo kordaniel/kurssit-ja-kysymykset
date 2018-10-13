@@ -13,13 +13,36 @@ import tikape.domain.Kysymys;
  */
 public class Vastaus {
     private Integer id;
-    private Kysymys kysymys;
+    private Integer kysymysId;
+    private String teksti;
     private Boolean oikein;
 
-    public Vastaus(Integer id, Kysymys kysymys, Boolean oikein) {
+    public Vastaus(Integer id, Integer kysymysId, String teksti, Boolean oikein) {
         this.id = id;
-        this.kysymys = kysymys;
+        this.kysymysId = kysymysId;
+        this.teksti = teksti;
         this.oikein = oikein;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public Integer getKysymysId() {
+        return kysymysId;
+    }
+    
+    public String getTeksti() {
+        return teksti;
+    }
+
+    public Boolean getOikein() {
+        return oikein;
+    }
+
+    @Override
+    public String toString() {
+        return this.id + ": (" + this.kysymysId + "): " +  this.teksti + ". onOikea=" + oikein;
     }
 
     
