@@ -20,6 +20,7 @@ import tikape.domain.Aihe;
 import tikape.domain.Kurssi;
 import tikape.domain.Kysymys;
 import tikape.domain.Vastaus;
+
 /**
  *
  * @author danielko
@@ -27,34 +28,31 @@ import tikape.domain.Vastaus;
 
 public class Main {
     //kurssit-ja-kysymykset.herokuapp.com
-    
+
     public static void main(String[] args) throws Exception {
         if (System.getenv("PORT") != null) {
             Spark.port(Integer.valueOf(System.getenv("PORT")));
         }
-        
-        
+
         Database database = new Database("kehitysTietokanta.db");
         KurssiDao kurssiDao = new KurssiDao(database);
         KysymysDao kysymysDao = new KysymysDao(database);
         VastausDao vastausDao = new VastausDao(database);
         AiheDao aiheDao = new AiheDao(database);
-        
-        
+
         //vastausDao.findAll().forEach(v -> System.out.println(v));
         //vastausDao.findAllForQuestion(kysymysDao.findOne(2)).forEach(v -> System.out.println(v));
         //System.out.println(vastausDao.findOne(8));
-        
         Spark.post("/uusikurssi", (req, res) -> {
             String nimi = req.queryParams("kurssinimi");
-            
+
             Kurssi uusiKurssi = new Kurssi(nimi);
             kurssiDao.saveOrUpdate(uusiKurssi);
-            
+
             res.redirect("/");
             return "";
         });
-        
+
         Spark.post("/poistakurssi", (req, res) -> {
             String saatu = req.queryParams("kurssiId");
             //System.out.println("saatu: " + saatu);
@@ -72,15 +70,37 @@ public class Main {
             res.redirect("/");
             return "";
         });
-        
-        
+
+        Spark.post("/poistakysymys/:id", (req, res) -> {
+            String saatuKurssiId = req.queryParams("kurssiId");
+            //System.out.println("saatu: " + saatuKurssiId);
+            int kurssiId  = -1;
+            int kysymysId = -1;
+            
+            try {
+                kysymysId = Integer.parseInt(req.params("id"));
+                kurssiId = Integer.parseInt(saatuKurssiId);
+                //System.out.println("intkurssi:  " + kurssiId);
+                //System.out.println("intkysymys: " + kysymysId);
+            } catch (NumberFormatException e) {
+                System.out.println("ei int: " + e);
+                res.redirect("/");
+                
+            }
+            
+            
+            kysymysDao.delete(kysymysId);
+            res.redirect("/kurssi/" + kurssiId);
+            return "";
+        });
+
         Spark.get("/", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("kurssit", kurssiDao.findAll());
-            
+
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
-        
+
         Spark.get("/kurssi/:id", (req, res) -> {
             Integer kurssiId = null;
             try {
@@ -88,19 +108,21 @@ public class Main {
             } catch (NumberFormatException e) {
                 res.redirect("/");
             }
-            
+
             Kurssi kurssi = kurssiDao.findOne(kurssiId);
-            if (kurssi == null) res.redirect("/");
-            
+            if (kurssi == null) {
+                res.redirect("/");
+            }
+
             List<Kysymys> kysymykset = kysymysDao.findAllForCourse(kurssi);
-            
+
             HashMap map = new HashMap<>();
             map.put("kurssi", kurssi);
-            map.put("kysymykset",kysymykset);
-            
+            map.put("kysymykset", kysymykset);
+
             return new ModelAndView(map, "kurssi");
         }, new ThymeleafTemplateEngine());
-        
+
         Spark.get("/kysymys/:id", (req, res) -> {
             Integer kysymysId = null;
             try {
@@ -109,19 +131,21 @@ public class Main {
                 res.redirect("/");
             }
             Kysymys kysymys = kysymysDao.findOne(kysymysId);
-            if (kysymys == null) res.redirect("/");
-            
+            if (kysymys == null) {
+                res.redirect("/");
+            }
+
             Aihe aihe = aiheDao.findOne(kysymys.getAihe_id());
             List<Vastaus> vastaukset = vastausDao.findAllForQuestion(kysymys);
-            
-            
+
             HashMap map = new HashMap<>();
             map.put("kysymys", kysymys);
             map.put("aihe", aihe);
             map.put("vastaukset", vastaukset);
-            
+
             return new ModelAndView(map, "kysymys");
         }, new ThymeleafTemplateEngine());
+
     }
-    
+
 }

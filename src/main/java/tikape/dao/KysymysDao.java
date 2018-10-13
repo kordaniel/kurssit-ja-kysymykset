@@ -91,7 +91,8 @@ public class KysymysDao implements Dao<Kysymys, Integer> {
 
     @Override
     public void delete(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("poistetaan(ei): " + findOne(key));
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     private void closeAllResources(ResultSet rs, PreparedStatement stmt, Connection conn) throws SQLException {

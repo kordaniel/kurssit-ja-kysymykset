@@ -11,6 +11,9 @@
             <li th:each="kysymys: ${kysymykset}">
                 <a th:href="@{~/kysymys/{id}(id=${kysymys.id})}">
                     <span th:text="${kysymys.teksti}">kysymys</span>
+                    <form method="post" th:action="@{~/poistakysymys/{id}(id=${kysymys.id})}">
+                        <button type="submit" name="kurssiId" th:value="${kysymys.kurssi_id}">Poista</button>
+                    </form>
                 </a>
             </li>
         </ul>
