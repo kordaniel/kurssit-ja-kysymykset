@@ -36,8 +36,8 @@ public class Main {
 
         Database database = new Database("kehitysTietokanta.db");
         KurssiDao kurssiDao = new KurssiDao(database);
-        KysymysDao kysymysDao = new KysymysDao(database);
         VastausDao vastausDao = new VastausDao(database);
+        KysymysDao kysymysDao = new KysymysDao(database,vastausDao);        
         AiheDao aiheDao = new AiheDao(database);
 
         //vastausDao.findAll().forEach(v -> System.out.println(v));
@@ -71,6 +71,26 @@ public class Main {
             return "";
         });
 
+        Spark.post("/luokysymys/:id", (req, res) -> {
+            int kurssiId = -1;
+            String kysymysTeksti = req.queryParams("kysymysTeksti");
+            String aiheTeksti = req.queryParams("aihe");
+            
+            try {
+                kurssiId = Integer.parseInt(req.params("id"));
+            } catch (NumberFormatException e) {
+                System.out.println("ei int: " + e);
+                res.redirect("/");
+            }
+            
+            
+            Aihe aihe = aiheDao.saveOrUpdate(new Aihe(-1, aiheTeksti));
+            Kysymys uusiKysymys = new Kysymys(-1, kysymysTeksti, kurssiId, aihe.getId());
+            kysymysDao.saveOrUpdate(uusiKysymys);
+            res.redirect("/kurssi/" + kurssiId);
+            return "";
+        });
+        
         Spark.post("/poistakysymys/:id", (req, res) -> {
             String saatuKurssiId = req.queryParams("kurssiId");
             //System.out.println("saatu: " + saatuKurssiId);
@@ -115,10 +135,12 @@ public class Main {
             }
 
             List<Kysymys> kysymykset = kysymysDao.findAllForCourse(kurssi);
-
+            //List<Aihe> aiheet = aiheDao.findAll();
+            
             HashMap map = new HashMap<>();
             map.put("kurssi", kurssi);
             map.put("kysymykset", kysymykset);
+            //map.put("aiheet", aiheet);
 
             return new ModelAndView(map, "kurssi");
         }, new ThymeleafTemplateEngine());

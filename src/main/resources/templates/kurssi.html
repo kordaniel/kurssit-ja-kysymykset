@@ -19,11 +19,12 @@
         </ul>
         <h3>Lisää uusi kysymys</h3>
         
-        <form>
+        <form method="post" th:action="@{~/luokysymys/{id}(id=${kurssi.id})}">
             <table>
-                <tr><td>Kysymysteksti:</td><td></td></tr>
+                <tr><td>Kysymysteksti:</td><td>Aihe:</td><td></td></tr>
                 <tr>
-                    <td><input type="text" name="uusiKysymys"/></td>
+                    <td><input type="text" name="kysymysTeksti"/></td>
+                    <td><input type="text" name="aihe"/></td>
                     <td><input type="submit" value="Luo"/></td>
                 </tr>
             </table>

@@ -39,9 +39,24 @@ public class AiheDao implements Dao<Aihe, Integer> {
         }
         
         Aihe aihe = new Aihe(rs.getInt("id"), rs.getString("teksti"));
-        
+        System.out.println("aihetta hakemassa:" + aihe);
         closeAllResources(rs, stmt, conn);
         return aihe;
+    }
+    
+    public Aihe findOneByAiheteksti(Aihe object) {
+        Aihe palautus = null;
+        try (Connection conn = db.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Aihe WHERE teksti = ?");
+            stmt.setString(1, object.getTeksti());
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                palautus = new Aihe(rs.getInt("id"), rs.getString("teksti"));
+            }
+        } catch (SQLException e) {
+            System.out.println("VIRHE" + e);
+        }
+        return palautus;
     }
 
     @Override
@@ -62,7 +77,17 @@ public class AiheDao implements Dao<Aihe, Integer> {
 
     @Override
     public Aihe saveOrUpdate(Aihe object) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Aihe palautus = findOneByAiheteksti(object);
+        if (palautus != null) return palautus;
+        
+        try (Connection conn = db.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Aihe (teksti) VALUES (?)");
+            stmt.setString(1, object.getTeksti());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("VIRHE " + e);
+        }
+        return findOneByAiheteksti(object);
     }
 
     @Override

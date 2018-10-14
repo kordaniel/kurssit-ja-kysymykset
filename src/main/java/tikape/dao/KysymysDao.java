@@ -21,9 +21,11 @@ import tikape.domain.Kysymys;
  */
 public class KysymysDao implements Dao<Kysymys, Integer> {
     private Database db;
+    private VastausDao vastausDao;
 
-    public KysymysDao(Database db) {
+    public KysymysDao(Database db, VastausDao vastausDao) {
         this.db = db;
+        this.vastausDao = vastausDao;
     }
     
     @Override
@@ -86,13 +88,31 @@ public class KysymysDao implements Dao<Kysymys, Integer> {
 
     @Override
     public Kysymys saveOrUpdate(Kysymys object) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try (Connection conn = db.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Kysymys (kurssi_id, aihe_id, teksti) VALUES (?, ?, ?)");
+            stmt.setInt(1, object.getKurssi_id());
+            stmt.setInt(2, object.getAihe_id());
+            stmt.setString(3, object.getTeksti());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("VIRHE LISATTAESSA KYSYMYSTA: " + e);
+        }
+        return null;
     }
 
     @Override
     public void delete(Integer key) throws SQLException {
-        System.out.println("poistetaan(ei): " + findOne(key));
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (key == null) return;
+        //System.out.println("poistetaan(ei): " + findOne(key));
+        vastausDao.deleteAllForQuestion(findOne(key));
+        
+        try (Connection conn = db.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM Kysymys WHERE id = ?");
+            stmt.setInt(1, key);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("VIRHE POISTETTAESSA KYSYMYSTA " + e);
+        }
     }
     
     private void closeAllResources(ResultSet rs, PreparedStatement stmt, Connection conn) throws SQLException {

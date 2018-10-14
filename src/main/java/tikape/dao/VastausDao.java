@@ -91,7 +91,27 @@ public class VastausDao implements Dao<Vastaus, Integer> {
 
     @Override
     public void delete(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (key == null) return;
+        
+        try (Connection conn = db.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM Vastaus WHERE id = ?");
+            stmt.setInt(1, key);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("ERROR " + e);
+        }
+    }
+    
+    //pitaisi tehda suoraan avaimella mielummin..
+    public void deleteAllForQuestion(Kysymys kysymys) {
+        if (kysymys == null) return;
+        try (Connection conn = db.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM Vastaus WHERE kysymys_id = ?");
+            stmt.setInt(1, kysymys.getId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("ERROR " + e);
+        }
     }
     
     private void closeAllResources(ResultSet rs, PreparedStatement stmt, Connection conn) throws SQLException {
