@@ -70,6 +70,21 @@ public class Main {
             res.redirect("/");
             return "";
         });
+        
+        Spark.post("/poistavastaus", (req, res) -> {
+            Integer vastausId = null;
+            //System.out.println(req.queryParams("vastausId"));
+            try {
+                vastausId = new Integer(req.queryParams("vastausId"));
+            } catch (NumberFormatException e) {
+                System.out.println("virhe vastausta poistettaessa: " + e);
+            }
+            
+            Vastaus v = vastausDao.findOne(vastausId);
+            vastausDao.delete(vastausId);
+            res.redirect("/kysymys/" + v.getKysymysId());
+            return "";
+        });
 
         Spark.post("/luokysymys/:id", (req, res) -> {
             int kurssiId = -1;
@@ -167,7 +182,32 @@ public class Main {
 
             return new ModelAndView(map, "kysymys");
         }, new ThymeleafTemplateEngine());
-
+        
+        Spark.post("/kysymys/:id", (req, res) -> {
+            Integer kysymysId = null;
+            boolean oikea;
+            
+            try {
+                kysymysId = Integer.parseInt(req.params("id"));
+            } catch (NumberFormatException e) {
+                System.out.println("ei saatu kysymysId:ta: " + e);
+                res.redirect("/");
+            }
+            String teksti = req.queryParams("vastausTeksti");
+            String oikein = req.queryParams("oikein");
+            
+            if (oikein == null) {
+                oikea = false;
+            } else {
+                oikea = "oikea".equals(oikein);
+            }
+             
+            
+            Vastaus v = new Vastaus(-1, kysymysId, teksti, oikea);
+            vastausDao.saveOrUpdate(v);
+            res.redirect("/kysymys/" + kysymysId);
+            return "";
+        });
     }
 
 }

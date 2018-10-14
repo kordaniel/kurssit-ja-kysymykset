@@ -39,7 +39,7 @@ public class AiheDao implements Dao<Aihe, Integer> {
         }
         
         Aihe aihe = new Aihe(rs.getInt("id"), rs.getString("teksti"));
-        System.out.println("aihetta hakemassa:" + aihe);
+        //System.out.println("aihetta hakemassa:" + aihe);
         closeAllResources(rs, stmt, conn);
         return aihe;
     }

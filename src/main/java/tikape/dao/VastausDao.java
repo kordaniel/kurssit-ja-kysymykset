@@ -83,10 +83,22 @@ public class VastausDao implements Dao<Vastaus, Integer> {
         closeAllResources(rs, stmt, conn);
         return vastaukset;
     }
-
+    
+    
     @Override
     public Vastaus saveOrUpdate(Vastaus object) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (object == null) return null;
+        try (Connection conn = db.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(
+                    "INSERT INTO Vastaus (kysymys_id, teksti, oikein) VALUES (?, ?, ?)");
+            stmt.setInt(1, object.getKysymysId());
+            stmt.setString(2, object.getTeksti());
+            stmt.setBoolean(3, object.getOikein());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("ERROR: " + e);
+        }
+        return null;
     }
 
     @Override

@@ -5,6 +5,7 @@
         <meta charset="UTF-8" />
     </head>
     <body>
+        <a href="/">Pääsivulle</a>
         <h1 th:text="${kysymys.teksti}">Kurssi</h1>
         <h3>Kysymys liittyy seuraaviin aiheisiin:</h3>
         <span th:text="${aihe.teksti}">aihe</span>
@@ -12,9 +13,29 @@
         <ul>
             <li th:each="vastaus: ${vastaukset}">
                 <span th:text="${vastaus.teksti}">vastaus</span>.
-                    <span style="font-weight:bold" th:text="${vastaus.onoikeavastaus}">oikein</span>
+                <span style="font-weight:bold" th:text="${vastaus.onoikeavastaus}">oikein</span>
+                <form method="post" action="/poistavastaus">
+                    <button type="submit" name="vastausId" th:value="${vastaus.id}">Poista</button>
+                </form>
             </li>
         </ul>
+        
+        <h3>Lisää uusi vastaus:</h3>
+        
+        <form method="post" th:action="@{~/kysymys/{id}(id=${kysymys.id})}">
+            <table>
+                <tr><td>Vastausteksti:</td><td>OnOikein:</td><td></td></tr>
+                <tr>
+                    <td><input type="text" name="vastausTeksti"/></td>
+                    <td><input type="checkbox" name="oikein" value="oikea"/></td>
+                    <td><input type="submit" value="Lisää"/></td>
+                </tr>
+            </table>
+        </form>
+        
+        
+        
+        
         <h4>Kysymys on liitetty seuraaviin kursseihin:</h4>
         
     </body>
