@@ -45,10 +45,11 @@ public class Main {
         //System.out.println(vastausDao.findOne(8));
         Spark.post("/uusikurssi", (req, res) -> {
             String nimi = req.queryParams("kurssinimi");
-
-            Kurssi uusiKurssi = new Kurssi(nimi);
-            kurssiDao.saveOrUpdate(uusiKurssi);
-
+            if (!nimi.isEmpty()) {
+                Kurssi uusiKurssi = new Kurssi(nimi);
+                kurssiDao.saveOrUpdate(uusiKurssi);
+            }
+            
             res.redirect("/");
             return "";
         });
@@ -78,6 +79,8 @@ public class Main {
                 vastausId = new Integer(req.queryParams("vastausId"));
             } catch (NumberFormatException e) {
                 System.out.println("virhe vastausta poistettaessa: " + e);
+                res.redirect("/");
+                return "";
             }
             
             Vastaus v = vastausDao.findOne(vastausId);
@@ -90,12 +93,17 @@ public class Main {
             int kurssiId = -1;
             String kysymysTeksti = req.queryParams("kysymysTeksti");
             String aiheTeksti = req.queryParams("aihe");
+            if (kysymysTeksti.isEmpty() || aiheTeksti.isEmpty()) {
+                res.redirect("/");
+                return "";
+            }
             
             try {
                 kurssiId = Integer.parseInt(req.params("id"));
             } catch (NumberFormatException e) {
                 System.out.println("ei int: " + e);
                 res.redirect("/");
+                return "";
             }
             
             
@@ -120,7 +128,7 @@ public class Main {
             } catch (NumberFormatException e) {
                 System.out.println("ei int: " + e);
                 res.redirect("/");
-                
+                return "";
             }
             
             
@@ -192,10 +200,15 @@ public class Main {
             } catch (NumberFormatException e) {
                 System.out.println("ei saatu kysymysId:ta: " + e);
                 res.redirect("/");
+                return "";
             }
             String teksti = req.queryParams("vastausTeksti");
             String oikein = req.queryParams("oikein");
             
+            if (teksti.isEmpty()) {
+                res.redirect("kysymys/" + kysymysId);
+                return "";
+            }
             if (oikein == null) {
                 oikea = false;
             } else {

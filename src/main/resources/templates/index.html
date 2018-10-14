@@ -1,16 +1,18 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Kurssit ja kysymykset harjoitus</title>
+        <title>Tikape Harjoitustyö 2</title>
         <meta charset="UTF-8" />
     </head>
     <body>
-        <h1>Kurssit testi</h1>
+        <h1>Tikape Laaja harjoitustyö 2</h1>
+        <h2>Heroku-sovellus johon voi luoda kursseja, ja kursseille kysymyksiä ja vastauksia</h2>
+        <div>Jos aikaa olisi jäänyt, niin olisi pitänyt lisätä liitostaulu Kurssi-Kysymys ja Aihe-Vastaus väliin, jolloin kysymyksiä, vastauksia ja aiheita olisi voinut käyttää huomattavasti monipuolisemmin.</div>
         <ul>
             <li th:each="kurssi: ${kurssit}">
                 <a th:href="@{~/kurssi/{id}(id=${kurssi.id})}">
                     <span th:text="${kurssi.nimi}">Kurssi</span></a>
-                <form method="post" action="~/poistakurssi">
+                <form method="post" action="/poistakurssi">
                     <button type="submit" name="kurssiId" th:value="${kurssi.id}">Poista</button>
                 </form>
             </li>
