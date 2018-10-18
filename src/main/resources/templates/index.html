@@ -7,7 +7,13 @@
     <body>
         <h1>Tikape Laaja harjoitustyö 2</h1>
         <h2>Heroku-sovellus johon voi luoda kursseja, ja kursseille kysymyksiä ja vastauksia</h2>
-        <div>Jos aikaa olisi jäänyt, niin olisi pitänyt lisätä liitostaulu Kurssi-Kysymys ja Aihe-Vastaus väliin, jolloin kysymyksiä, vastauksia ja aiheita olisi voinut käyttää huomattavasti monipuolisemmin.</div>
+        <p>Jos aikaa olisi jäänyt, niin olisi pitänyt lisätä liitostaulu Kurssi-Kysymys ja Aihe-Vastaus väliin, jolloin kysymyksiä, vastauksia ja aiheita olisi voinut käyttää huomattavasti monipuolisemmin.</p>
+        <p><strong>Huomautus: Olen luonut uuden github-käyttäjän: 'kordaniel' yliopistoa varten, 
+                mutta nyt olen kuitenkin epähuomiossa onnistunut vahingossa käyttämään omalla 
+                koneellani ohjelmoidessani vanhaa tunnustani: Vakxu, joten valitettavasti tässä 
+                projektissa nyt on kahden eri tunnuksen lisäykset. Molemmat ovat kuitenkin omiani!</strong></p>
+        
+        <h3>Kaikki kurssit:</h3>
         <ul>
             <li th:each="kurssi: ${kurssit}">
                 <a th:href="@{~/kurssi/{id}(id=${kurssi.id})}">
@@ -17,10 +23,17 @@
                 </form>
             </li>
         </ul>
+        
+        <h4>Luo uusi:</h4>
         <form method="post" action="/uusikurssi">
-            <span>Lisää uusi:</span>
-            <input type="text" name="kurssinimi"/>
-            <input type="submit" value="lisää Kurssi"/>
+            <table>
+                <tr><td>Nimi:</td><td>Aihe:</td><td></td></tr>
+                <tr>
+                    <td><input type="text" name="kurssinimi"/></td>
+                    <td><input type="text" name="kurssiaihe"/></td>
+                    <td><input type="submit" value="lisää Kurssi"/></td>
+                </tr>
+            </table>
         </form>
     </body>
 </html>

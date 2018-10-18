@@ -39,7 +39,7 @@ public class KurssiDao implements Dao<Kurssi, Integer> {
             return null;
         }
         
-        Kurssi kurssi = new Kurssi(rs.getInt("id"), rs.getString("nimi"));
+        Kurssi kurssi = new Kurssi(rs.getInt("id"), rs.getInt("aihe_id"), rs.getString("nimi"));
         
         closeAllResources(rs, stmt, conn);
         return kurssi;
@@ -54,7 +54,7 @@ public class KurssiDao implements Dao<Kurssi, Integer> {
         List<Kurssi> kurssit = new ArrayList<>();
         
         while (rs.next()) {
-            kurssit.add(new Kurssi(rs.getInt("id"), rs.getString("nimi")));
+            kurssit.add(new Kurssi(rs.getInt("id"), rs.getInt("aihe_id"), rs.getString("nimi")));
         }
         
         closeAllResources(rs, stmt, conn);
@@ -64,8 +64,9 @@ public class KurssiDao implements Dao<Kurssi, Integer> {
     @Override
     public Kurssi saveOrUpdate(Kurssi object) throws SQLException {
         try (Connection conn = db.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Kurssi (nimi) VALUES (?)");
-            stmt.setString(1, object.getNimi());
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Kurssi (aihe_id, nimi) VALUES (?, ?)");
+            stmt.setInt(1, object.getAihe_id());
+            stmt.setString(2, object.getNimi());
             stmt.executeUpdate();
         }
         return null;

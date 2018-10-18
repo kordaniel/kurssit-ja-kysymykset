@@ -45,8 +45,10 @@ public class Main {
         //System.out.println(vastausDao.findOne(8));
         Spark.post("/uusikurssi", (req, res) -> {
             String nimi = req.queryParams("kurssinimi");
-            if (!nimi.isEmpty()) {
-                Kurssi uusiKurssi = new Kurssi(nimi);
+            String aihe = req.queryParams("kurssiaihe");
+            if (!nimi.isEmpty() && !aihe.isEmpty()) {
+                Aihe aiheolio = aiheDao.saveOrUpdate(new Aihe(-1, aihe));
+                Kurssi uusiKurssi = new Kurssi(aiheolio.getId(), nimi);
                 kurssiDao.saveOrUpdate(uusiKurssi);
             }
             
@@ -158,11 +160,13 @@ public class Main {
             }
 
             List<Kysymys> kysymykset = kysymysDao.findAllForCourse(kurssi);
+            Aihe aihe = aiheDao.findOne(kurssi.getAihe_id());
             //List<Aihe> aiheet = aiheDao.findAll();
             
             HashMap map = new HashMap<>();
             map.put("kurssi", kurssi);
             map.put("kysymykset", kysymykset);
+            map.put("aihe", aihe);
             //map.put("aiheet", aiheet);
 
             return new ModelAndView(map, "kurssi");
@@ -206,7 +210,7 @@ public class Main {
             String oikein = req.queryParams("oikein");
             
             if (teksti.isEmpty()) {
-                res.redirect("kysymys/" + kysymysId);
+                res.redirect("/kysymys/" + kysymysId);
                 return "";
             }
             if (oikein == null) {

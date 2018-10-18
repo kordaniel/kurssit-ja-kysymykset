@@ -8,6 +8,8 @@
         <a href="/">Pääsivulle</a>
         <h3>Kurssi-sivu:</h3>
         <h1 th:text="${kurssi.nimi}">Kurssi</h1>
+        <h4>Aihe:</h4>
+        <span th:text="${aihe.teksti}">Aihe</span>
         <h3>Tämän kurssin kysymykset:</h3>
         <ul>
             <li th:each="kysymys: ${kysymykset}">
@@ -23,7 +25,7 @@
         <h4>Lisää uusi kysymys:</h4>
         <form method="post" th:action="@{~/luokysymys/{id}(id=${kurssi.id})}">
             <table>
-                <tr><td>Kysymysteksti:</td><td>Aihe:</td><td></td></tr>
+                <tr><td>Kysymysteksti:</td><td>Aihe johon kysymys liittyy:</td><td></td></tr>
                 <tr>
                     <td><input type="text" name="kysymysTeksti"/></td>
                     <td><input type="text" name="aihe"/></td>
