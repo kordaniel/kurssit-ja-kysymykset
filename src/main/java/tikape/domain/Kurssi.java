@@ -5,10 +5,6 @@
  */
 package tikape.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-import tikape.dao.AiheDao;
-
 /**
  *
  * @author danielko

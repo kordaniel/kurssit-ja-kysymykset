@@ -5,7 +5,6 @@
  */
 package tikape.domain;
 
-import tikape.domain.Kysymys;
 
 /**
  *

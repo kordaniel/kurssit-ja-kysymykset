@@ -5,10 +5,6 @@
  */
 package tikape.domain;
 
-import tikape.domain.Kurssi;
-import tikape.domain.Aihe;
-import java.util.List;
-
 /**
  *
  * @author danielko
