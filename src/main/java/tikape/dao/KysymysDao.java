@@ -85,6 +85,12 @@ public class KysymysDao implements Dao<Kysymys, Integer> {
         closeAllResources(rs, stmt, conn);
         return kysymykset;
     }
+    
+    public void deleteAllForCourse(Kurssi k) throws SQLException {
+        for (Kysymys kysymys : findAllForCourse(k)) {
+            delete(kysymys.getId());
+        }
+    }
 
     @Override
     public Kysymys saveOrUpdate(Kysymys object) throws SQLException {

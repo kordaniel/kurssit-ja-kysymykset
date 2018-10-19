@@ -6,7 +6,6 @@
 package tikape;
 
 import tikape.database.Database;
-import java.sql.*;
 import java.util.HashMap;
 import java.util.List;
 import spark.ModelAndView;
@@ -36,14 +35,12 @@ public class Main {
         
 
         Database database = new Database("kehitysTietokanta.db");
-        KurssiDao kurssiDao = new KurssiDao(database);
+        
         VastausDao vastausDao = new VastausDao(database);
         KysymysDao kysymysDao = new KysymysDao(database,vastausDao);        
+        KurssiDao kurssiDao = new KurssiDao(database, kysymysDao);
         AiheDao aiheDao = new AiheDao(database);
 
-        //vastausDao.findAll().forEach(v -> System.out.println(v));
-        //vastausDao.findAllForQuestion(kysymysDao.findOne(2)).forEach(v -> System.out.println(v));
-        //System.out.println(vastausDao.findOne(8));
         Spark.post("/uusikurssi", (req, res) -> {
             String nimi = req.queryParams("kurssinimi");
             String aihe = req.queryParams("kurssiaihe");
@@ -59,17 +56,13 @@ public class Main {
 
         Spark.post("/poistakurssi", (req, res) -> {
             String saatu = req.queryParams("kurssiId");
-            //System.out.println("saatu: " + saatu);
             int kurssiId = -1;
             try {
                 kurssiId = Integer.parseInt(saatu);
-                //System.out.println("int: " + kurssiId);
             } catch (NumberFormatException e) {
-                //System.out.println("ei int: " + e);
                 res.redirect("/");
                 return "";
             }
-            //System.out.println("poistetaan: " + kurssiId);
             kurssiDao.delete(kurssiId);
             res.redirect("/");
             return "";

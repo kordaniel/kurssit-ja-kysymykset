@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import tikape.database.Database;
 import tikape.domain.Kurssi;
+import tikape.domain.Kysymys;
 
 /**
  *
@@ -20,8 +21,9 @@ import tikape.domain.Kurssi;
  */
 public class KurssiDao implements Dao<Kurssi, Integer> {
     private Database db;
+    private KysymysDao kysymysDao;
 
-    public KurssiDao(Database database) {
+    public KurssiDao(Database database, KysymysDao kysymysDao) {
         this.db = database;
     }
     
@@ -74,6 +76,11 @@ public class KurssiDao implements Dao<Kurssi, Integer> {
     
     @Override
     public void delete(Integer key) throws SQLException {
+        Kurssi kurssi = findOne(key);
+        if (kurssi == null) {
+            return;
+        }
+        kysymysDao.deleteAllForCourse(kurssi);
         try (Connection conn = db.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM Kurssi WHERE id = ?");
             stmt.setInt(1, key);
