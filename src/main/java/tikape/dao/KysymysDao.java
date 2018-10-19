@@ -30,6 +30,8 @@ public class KysymysDao implements Dao<Kysymys, Integer> {
     
     @Override
     public Kysymys findOne(Integer key) throws SQLException {
+        if (key == null) return null;
+        
         Connection conn = db.getConnection();
         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Kysymys WHERE id = ?");
         stmt.setInt(1, key);

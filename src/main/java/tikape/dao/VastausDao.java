@@ -116,7 +116,15 @@ public class VastausDao implements Dao<Vastaus, Integer> {
     
     //pitaisi tehda suoraan avaimella mielummin..
     public void deleteAllForQuestion(Kysymys kysymys) {
-        if (kysymys == null) return;
+        if (kysymys == null) {
+            System.out.println("DEBUG(VastausDao.deleteAllForQuestion: kysymys=null" );
+            return;
+        }
+        if (kysymys.getId() == null) {
+            System.out.println("DEBUG(VastausDao.deleteAllForQuestion: kysymysId=null");
+        } else {
+            System.out.println("DEBUG(VastausDao.deleteAllForQuestion: kysymysId = " +kysymys.getId());
+        }
         try (Connection conn = db.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM Vastaus WHERE kysymys_id = ?");
             stmt.setInt(1, kysymys.getId());
