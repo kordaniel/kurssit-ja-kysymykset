@@ -34,11 +34,14 @@ public class Main {
         Spark.post("/uusikurssi", (req, res) -> {
             String nimi = req.queryParams("kurssinimi");
             String aihe = req.queryParams("kurssiaihe");
-            if (!nimi.isEmpty() && !aihe.isEmpty()) {
-                Aihe aiheolio = aiheDao.saveOrUpdate(new Aihe(-1, aihe));
-                Kurssi uusiKurssi = new Kurssi(aiheolio.getId(), nimi);
-                kurssiDao.saveOrUpdate(uusiKurssi);
+            
+            if (nimi.isEmpty() || aihe.isEmpty()) {
+                return "Olet syöttänyt joko tyhjän kurssinimen tai et syöttänyt aihetta, yritäppä uudelleen";
             }
+            
+            Aihe aiheolio = aiheDao.saveOrUpdate(new Aihe(-1, aihe));
+            Kurssi uusiKurssi = new Kurssi(aiheolio.getId(), nimi);
+            kurssiDao.saveOrUpdate(uusiKurssi);
             
             res.redirect("/");
             return "";
@@ -79,8 +82,9 @@ public class Main {
             String kysymysTeksti = req.queryParams("kysymysTeksti");
             String aiheTeksti = req.queryParams("aihe");
             if (kysymysTeksti.isEmpty() || aiheTeksti.isEmpty()) {
-                res.redirect("/");
-                return "";
+                //res.redirect("/");
+                //return "";
+                return "Virhe joko kysymystekstissä tai aihetekstissä, puuttuivat?";
             }
             
             try {
@@ -188,9 +192,10 @@ public class Main {
             String oikein = req.queryParams("oikein");
             
             if (teksti.isEmpty()) {
-                res.redirect("/kysymys/" + kysymysId);
-                return "";
+                //res.redirect("/kysymys/" + kysymysId);
+                return "Ei voida luoda vastausta ilman tekstiä, lisää teksti ja yritä uudelleen ";
             }
+            
             if (oikein == null) {
                 oikea = false;
             } else {
