@@ -25,6 +25,7 @@ public class Database {
         if (dbUrl != null && dbUrl.length() > 0) {
             return DriverManager.getConnection(dbUrl);
         }
-        return DriverManager.getConnection("jdbc:sqlite:" + dbAddress);
+        //return DriverManager.getConnection("jdbc:sqlite:" + dbAddress);
+        return null;
     }
 }
