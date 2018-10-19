@@ -81,7 +81,7 @@ public class KurssiDao implements Dao<Kurssi, Integer> {
             return;
         }
         System.out.println("DEBUG(KurssiDao.delete): " + kurssi);
-        kysymysDao.deleteAllForCourse(kurssi);
+        //kysymysDao.deleteAllForCourse(kurssi);
         try (Connection conn = db.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM Kurssi WHERE id = ?");
             stmt.setInt(1, key);
