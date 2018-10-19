@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tikape.dao;
 
 import java.sql.Connection;
@@ -14,10 +9,6 @@ import java.util.List;
 import tikape.database.Database;
 import tikape.domain.Aihe;
 
-/**
- *
- * @author danielko
- */
 public class AiheDao implements Dao<Aihe, Integer> {
     private Database db;
 
@@ -39,7 +30,6 @@ public class AiheDao implements Dao<Aihe, Integer> {
         }
         
         Aihe aihe = new Aihe(rs.getInt("id"), rs.getString("teksti"));
-        //System.out.println("aihetta hakemassa:" + aihe);
         closeAllResources(rs, stmt, conn);
         return aihe;
     }
@@ -92,6 +82,7 @@ public class AiheDao implements Dao<Aihe, Integer> {
 
     @Override
     public void delete(Integer key) throws SQLException {
+        //TILA ON HALPAA -> AIHEITA EI TARVITSE POISTAA!!
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

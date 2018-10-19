@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tikape;
 
 import tikape.database.Database;
@@ -20,11 +15,6 @@ import tikape.domain.Kurssi;
 import tikape.domain.Kysymys;
 import tikape.domain.Vastaus;
 
-/**
- *
- * @author danielko
- */
-
 public class Main {
     //kurssit-ja-kysymykset.herokuapp.com
 
@@ -40,7 +30,7 @@ public class Main {
         KysymysDao kysymysDao = new KysymysDao(database,vastausDao);        
         KurssiDao kurssiDao = new KurssiDao(database, kysymysDao);
         AiheDao aiheDao = new AiheDao(database);
-
+        
         Spark.post("/uusikurssi", (req, res) -> {
             String nimi = req.queryParams("kurssinimi");
             String aihe = req.queryParams("kurssiaihe");
@@ -56,7 +46,7 @@ public class Main {
 
         Spark.post("/poistakurssi", (req, res) -> {
             String saatu = req.queryParams("kurssiId");
-            int kurssiId = -1;
+            Integer kurssiId = -1;
             try {
                 kurssiId = Integer.parseInt(saatu);
             } catch (NumberFormatException e) {
@@ -70,7 +60,6 @@ public class Main {
         
         Spark.post("/poistavastaus", (req, res) -> {
             Integer vastausId = null;
-            //System.out.println(req.queryParams("vastausId"));
             try {
                 vastausId = new Integer(req.queryParams("vastausId"));
             } catch (NumberFormatException e) {
@@ -112,15 +101,12 @@ public class Main {
         
         Spark.post("/poistakysymys/:id", (req, res) -> {
             String saatuKurssiId = req.queryParams("kurssiId");
-            //System.out.println("saatu: " + saatuKurssiId);
             int kurssiId  = -1;
             int kysymysId = -1;
             
             try {
                 kysymysId = Integer.parseInt(req.params("id"));
                 kurssiId = Integer.parseInt(saatuKurssiId);
-                //System.out.println("intkurssi:  " + kurssiId);
-                //System.out.println("intkysymys: " + kysymysId);
             } catch (NumberFormatException e) {
                 System.out.println("ei int: " + e);
                 res.redirect("/");
@@ -155,13 +141,11 @@ public class Main {
 
             List<Kysymys> kysymykset = kysymysDao.findAllForCourse(kurssi);
             Aihe aihe = aiheDao.findOne(kurssi.getAihe_id());
-            //List<Aihe> aiheet = aiheDao.findAll();
             
             HashMap map = new HashMap<>();
             map.put("kurssi", kurssi);
             map.put("kysymykset", kysymykset);
             map.put("aihe", aihe);
-            //map.put("aiheet", aiheet);
 
             return new ModelAndView(map, "kurssi");
         }, new ThymeleafTemplateEngine());

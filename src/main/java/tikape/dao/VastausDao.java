@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tikape.dao;
 
 import java.sql.Connection;
@@ -12,14 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import tikape.database.Database;
-import tikape.domain.Kurssi;
 import tikape.domain.Kysymys;
 import tikape.domain.Vastaus;
 
-/**
- *
- * @author danielko
- */
 public class VastausDao implements Dao<Vastaus, Integer> {
     private Database db;
 
@@ -117,14 +107,17 @@ public class VastausDao implements Dao<Vastaus, Integer> {
     //pitaisi tehda suoraan avaimella mielummin..
     public void deleteAllForQuestion(Kysymys kysymys) {
         if (kysymys == null) {
-            System.out.println("DEBUG(VastausDao.deleteAllForQuestion: kysymys=null" );
+            //System.out.println("DEBUG(VastausDao.deleteAllForQuestion: kysymys=null" );
             return;
         }
-        if (kysymys.getId() == null) {
-            System.out.println("DEBUG(VastausDao.deleteAllForQuestion: kysymysId=null");
-        } else {
-            System.out.println("DEBUG(VastausDao.deleteAllForQuestion: kysymysId = " +kysymys.getId());
-        }
+        //
+        //if (kysymys.getId() == null) {
+        //    //System.out.println("DEBUG(VastausDao.deleteAllForQuestion: kysymysId=null");
+        //} else {
+        //    //System.out.println("DEBUG(VastausDao.deleteAllForQuestion: kysymysId = " + kysymys.getId());
+        //}
+        
+        //System.out.println("DEBUG(VastausDao.deleteAllForQuestion: " + kysymys);
         try (Connection conn = db.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM Vastaus WHERE kysymys_id = ?");
             stmt.setInt(1, kysymys.getId());

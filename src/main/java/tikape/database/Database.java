@@ -1,18 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tikape.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/**
- *
- * @author danielko
- */
 public class Database {
     private String dbAddress;
 
@@ -24,8 +15,11 @@ public class Database {
         String dbUrl = System.getenv("JDBC_DATABASE_URL");
         if (dbUrl != null && dbUrl.length() > 0) {
             return DriverManager.getConnection(dbUrl);
+        } else {
+            //JOS EI OLE HEROKU-TIETOKANTAA, KAYTETAAN SQLITE
+            return DriverManager.getConnection("jdbc:sqlite:" + dbAddress);
         }
-        //return DriverManager.getConnection("jdbc:sqlite:" + dbAddress);
-        return null;
+        
+        //return null;
     }
 }

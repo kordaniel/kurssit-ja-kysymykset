@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tikape.dao;
 
 import java.sql.Connection;
@@ -15,10 +10,6 @@ import tikape.database.Database;
 import tikape.domain.Kurssi;
 import tikape.domain.Kysymys;
 
-/**
- *
- * @author danielko
- */
 public class KysymysDao implements Dao<Kysymys, Integer> {
     private Database db;
     private VastausDao vastausDao;
@@ -111,7 +102,6 @@ public class KysymysDao implements Dao<Kysymys, Integer> {
     @Override
     public void delete(Integer key) throws SQLException {
         if (key == null) return;
-        //System.out.println("poistetaan(ei): " + findOne(key));
         vastausDao.deleteAllForQuestion(findOne(key));
         
         try (Connection conn = db.getConnection()) {

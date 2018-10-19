@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tikape.dao;
 
 import java.sql.Connection;
@@ -13,18 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 import tikape.database.Database;
 import tikape.domain.Kurssi;
-import tikape.domain.Kysymys;
 
-/**
- *
- * @author danielko
- */
 public class KurssiDao implements Dao<Kurssi, Integer> {
     private Database db;
     private KysymysDao kysymysDao;
 
     public KurssiDao(Database database, KysymysDao kysymysDao) {
         this.db = database;
+        this.kysymysDao = kysymysDao;
     }
     
     @Override
@@ -80,11 +71,13 @@ public class KurssiDao implements Dao<Kurssi, Integer> {
         if (kurssi == null) {
             return;
         }
-        System.out.println("DEBUG(KurssiDao.delete): " + kurssi);
-        //kysymysDao.deleteAllForCourse(kurssi);
+        
+        kysymysDao.deleteAllForCourse(kurssi);
+        
         try (Connection conn = db.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM Kurssi WHERE id = ?");
-            stmt.setInt(1, key);
+            //stmt.setInt(1, key);
+            stmt.setInt(1, kurssi.getId());
             stmt.executeUpdate();
         }
     }
