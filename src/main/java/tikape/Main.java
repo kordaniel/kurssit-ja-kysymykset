@@ -33,6 +33,7 @@ public class Main {
         if (System.getenv("PORT") != null) {
             Spark.port(Integer.valueOf(System.getenv("PORT")));
         }
+        
 
         Database database = new Database("kehitysTietokanta.db");
         KurssiDao kurssiDao = new KurssiDao(database);
@@ -226,5 +227,5 @@ public class Main {
             return "";
         });
     }
-
+    
 }
