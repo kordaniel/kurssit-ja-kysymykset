@@ -1,2 +1,2 @@
 # kurssit-ja-kysymykset
-Tikape-s18 kurssin laaja harjoitustyö 2. Sovellukseen voi luoda Kursseja, ja kursseille taas kysymyksiä. Kysymyksille voi luoda vastauksia, jotka voivat olla joko oikeita tai vääriä. Minulla on itselläni kaksi github-tunnusta: Vanhempi 'Vakxu' ja sitten uusi 'kordaniel' jonka olen luonut yliopisto-kursseja varten. Vahingossa olen nyt onnistunut käyttämään molempia tätä harjoitustyötä tehdessä. Molemmat ovat kuitenkin omiani.
+Tikape-s18 kurssin laaja harjoitustyö 2. Sovellukseen voi luoda Kursseja, ja kursseille taas kysymyksiä. Kysymyksille voi luoda vastauksia, jotka voivat olla joko oikeita tai vääriä.
